@@ -1,8 +1,8 @@
 #pragma once
 #include <set>
 
-#include "enumAnimal.h"
-#include "animal.h"
+#include "../animales/enumAnimal.h"
+#include "../animales/animal.h"
 
 class Escena {
     private:
