@@ -1,12 +1,16 @@
 #pragma once
-#include "enumAnimal.h"
+#include <string>
+#include <vector>
+
 class Animal {
     private:
-        AnimalNombre nombre_animal;
+        std::string nombre_animal;
         int grandeza;
+        static const std::vector<std::string> nombresAnimales;
+        
     public:
-        Animal(AnimalNombre nombre_animal, int grandeza);
-        AnimalNombre getNombreAnimal();
+        Animal(int n);
+        std::string getNombreAnimal();
         int getGrandeza();
-
+    
 };
