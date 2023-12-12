@@ -1,5 +1,5 @@
-#include "../escena/escena.h"
-#include "apertura.h"
+#include "../../escena/escena.h"
+#include "./apertura.h"
 
 
 Apertura::Apertura(std::initializer_list<std::set<Animal>> escenas): escenas(escenas) {}

@@ -1,8 +1,8 @@
 #pragma once
 #include <set>
 
-#include "../animales/enumAnimal.h"
-#include "../animales/animal.h"
+#include "../../animales/enumAnimal.h"
+#include "../../animales/animal.h"
 #include <vector>
 
 
