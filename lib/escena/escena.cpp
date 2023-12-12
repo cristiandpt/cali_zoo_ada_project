@@ -1,7 +1,7 @@
-#include "escena.h"
+#include "./escena.h"
 
-/*
-Escena::Escena(std::initializer_list<Animal> animales)
+
+Escena::Escena(std::set<Animal> animales)
     :animales(animales) {}
 
 
@@ -17,4 +17,13 @@ int Escena::getAnimalGreatness() {
     }
     return grandeza;
 }
-    */
+
+std::string Escena::getAnimalsNames() {
+    std::string nombres;
+    for (Animal animal : animales) {
+        nombres = nombres + animal.getNombreAnimal();
+        nombres = nombres + "_";
+    }
+    return nombres;
+}
+    
