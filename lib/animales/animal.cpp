@@ -2,7 +2,14 @@
 
 // constructor de la clase Animal
 Animal::Animal(AnimalNombre nombre_animal, int grandeza)
-    :nombre_animal(nombre_animal), grandeza(grandeza) {}
+    :nombre_animal(nombre_animal) {
+        if(grandeza >= 0){
+            this->grandeza = grandeza;
+        }
+        else {
+            this->grandeza = -1;
+        }
+    }
 
 // retorna el nombre del animal
 AnimalNombre Animal::getNombreAnimal() 

@@ -1,10 +1,10 @@
-#include "escena.h"
+#include "../escena/escena.h"
 #include "apertura.h"
 
 
 Apertura::Apertura(std::initializer_list<std::set<Animal>> escenas): escenas(escenas) {}
 
-
+/*
  std::vector<std::set<Animal>> Apertura::getEscenas() 
     {
         return escenas;
@@ -19,5 +19,5 @@ Apertura::Apertura(std::initializer_list<std::set<Animal>> escenas): escenas(esc
     }
     return animales;
  }
-
+*/
     

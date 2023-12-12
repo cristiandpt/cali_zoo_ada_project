@@ -1,6 +1,6 @@
 #include "escena.h"
 
-
+/*
 Escena::Escena(std::initializer_list<Animal> animales)
     :animales(animales) {}
 
@@ -17,4 +17,4 @@ int Escena::getAnimalGreatness() {
     }
     return grandeza;
 }
-    
+    */

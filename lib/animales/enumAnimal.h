@@ -1,3 +1,5 @@
+#ifndef ENUM_ANIMAL_H
+#define ENUM_ANIMAL_H
 enum class AnimalNombre
 {
     Leon,
@@ -51,3 +53,4 @@ enum class AnimalNombre
     Lemur,
     Carpincho
 };
+#endif // ENUM_ANIMAL_H
