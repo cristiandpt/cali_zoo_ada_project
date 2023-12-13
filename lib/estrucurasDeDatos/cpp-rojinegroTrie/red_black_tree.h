@@ -33,8 +33,8 @@ class RedBlackTree: public BaseContainer<T> {
 
 
         std::size_t min() override {
-            const std::shared_ptr<RBNode<T>>& firstElement = begin().getCurrent();
 
+            const std::shared_ptr<RBNode<T>>& firstElement = begin().getCurrent();
             if (firstElement == nullptr) {
                 throw std::logic_error("Tree is empty");
             }     
@@ -43,6 +43,7 @@ class RedBlackTree: public BaseContainer<T> {
         }
 
         std::size_t aggregate() override {
+
             std::size_t sum = 0;
             for (const auto& node : *this)  {
                 sum += node.getAnimalGreatness();
@@ -185,8 +186,8 @@ class RedBlackTree: public BaseContainer<T> {
             return root->getValue();
         }
 
-
         class Iterator {
+
             public:
                 using iterator_category = std::forward_iterator_tag;
                 using value_type = T;
@@ -229,7 +230,6 @@ class RedBlackTree: public BaseContainer<T> {
                         return *this;
                     }
 
-
                     bool operator==(const Iterator& other) const {
                         return current == other.current;
                     }
@@ -244,6 +244,7 @@ class RedBlackTree: public BaseContainer<T> {
 
             private:
                 std::shared_ptr<RBNode<T>> current;
+
         };
 
          Iterator begin() {
@@ -259,19 +260,20 @@ class RedBlackTree: public BaseContainer<T> {
         }
 
     private:
+
         std::shared_ptr<RBNode<T>> root;
         int length = 0;
         
         void inorderTraversal(std::shared_ptr<RBNode<T>> node) {
-        if (node != nullptr) {
-            // Traverse the left subtree
-            inorderTraversal(node->getLeft());
-            // Visit the current node
-            std::cout << node->getValue() << " ";
-            // Traverse the right subtree
-            inorderTraversal(node->getRight());
-       }
-}
+            if (node != nullptr) {
+                // Recorrise el subarbol izquierdo
+                inorderTraversal(node->getLeft());
+                // Cuando regresa al nodo actual, imprime el valor asociado al nodo.
+                std::cout << node->getValue() << " ";
+                // TRecorrer el subarbol derecho.
+                inorderTraversal(node->getRight());
+            }
+        }
      
 
 };

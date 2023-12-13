@@ -1,7 +1,6 @@
 #include "animal.h"
 #include <random>
 
-
 const std::vector<std::string> nombresAnimales = {"Leon","Tigre","Elefante","Jirafa","Cebra","Oso","Canguro","Panda","Gorila","Chimpance","Hipopotamo","Rinoceronte","Cocodrilo","Caiman","Flamenco","Pinguino","Avestruz","PavoReal","Koala","Perezoso","Lobo","Zorro","Bisonte","Bufalo","Camello","Dromedario","Foca","Leopardo","Jaguar","Mono","Murcielago","Nutria","Puercoespin","Armadillo","Suricata","Okapi","Iguana","Tortuga","Serpiente","Cacatua","Tucan","Lince","Puma","Guacamayo","Orix","Antilope","Gacela","Mandril","Lemur","Carpincho"};
 
 int tamNombres = nombresAnimales.size();
@@ -22,8 +21,7 @@ std::string generarNombre(){
     return nombresAnimales[i];
 }
 
-Animal::Animal(int n){
-    
+Animal::Animal(int n){   
     nombre_animal = generarNombre();
     int value = generarGrandeza(n);
     grandeza = value;

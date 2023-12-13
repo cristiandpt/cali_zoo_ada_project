@@ -1,14 +1,11 @@
 #include "./escena.h"
 #include <sstream>
 
-Escena::Escena(std::set<Animal> animales)
-    :animales(animales) {}
+Escena::Escena(std::set<Animal> animales): animales(animales) {}
 
-
- std::set<Animal> Escena::getAnimals() 
-    {
+std::set<Animal> Escena::getAnimals() {
         return animales;
-    }
+}
 
 int Escena::getAnimalGreatness() const {
     int grandeza = 0;
@@ -18,7 +15,7 @@ int Escena::getAnimalGreatness() const {
     return grandeza;
 }
 
- std::string Escena::getAnimalsNames() const {
+std::string Escena::getAnimalsNames() const {
     std::ostringstream oss;
     for (const auto& animal : animales) {
         oss << "|" <<animal.getNombreAnimal() << "|";

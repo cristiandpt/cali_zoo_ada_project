@@ -6,6 +6,7 @@
 #include "../animales/animal.h"
 
 class Escena {
+    
     private:
         std::set<Animal> animales;
 

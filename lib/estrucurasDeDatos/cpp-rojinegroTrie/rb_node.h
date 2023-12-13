@@ -1,12 +1,10 @@
 #pragma once
-
 #include <iostream>
 #include <memory>
 
 template <typename V>
 class RBNode {
  
-    
     public:
         enum class Color { RED, BLACK };
         RBNode(V& value, Color color = Color::RED)
@@ -30,9 +28,8 @@ class RBNode {
 
          V& getValue() {
             return value;
-    }
+        }
 
-    // Getter for color
         Color getColor() const {
             return color;
         }
@@ -41,17 +38,13 @@ class RBNode {
             color = color;
         }
 
-        // Getter for left child
         std::shared_ptr<RBNode<V>> getLeft() const {
             return left;
         }
-
-        // Getter for right child
         std::shared_ptr<RBNode<V>> getRight() const {
             return right;
         }
 
-        // Getter for parent
         std::weak_ptr<RBNode<V>> getParent() {
             return parent;
         }
@@ -68,12 +61,11 @@ class RBNode {
             parent = std::shared_ptr<RBNode<V>>(node);
         }
 
-
-
     private:
         V value;
         Color color;
         std::shared_ptr<RBNode<V>> left;
         std::shared_ptr<RBNode<V>> right;
         std::weak_ptr<RBNode<V>> parent;
+
 };

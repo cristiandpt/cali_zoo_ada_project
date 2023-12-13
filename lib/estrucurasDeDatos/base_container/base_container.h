@@ -2,8 +2,8 @@
 
 template <typename T>
 class BaseContainer {
-   public:
 
+   public:
       virtual std::size_t  max() = 0;
       virtual std::size_t  min() = 0;
       virtual std::size_t  aggregate() = 0;
@@ -12,6 +12,7 @@ class BaseContainer {
       virtual double  mean() = 0;
       virtual ~BaseContainer() = default;
       virtual void insert(T& value) = 0; 
+  
   protected:
-   int length{};
-};//
+      int length{};
+};

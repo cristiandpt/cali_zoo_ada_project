@@ -4,6 +4,7 @@
 #include <ostream>
 
 class Animal {
+    
     private:
         std::string nombre_animal;
         int grandeza;
