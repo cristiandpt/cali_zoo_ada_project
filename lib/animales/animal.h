@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <ostream>
 
 class Animal {
     private:
@@ -10,7 +11,8 @@ class Animal {
         
     public:
         Animal(int n);
-        std::string getNombreAnimal();
-        int getGrandeza();
-    
+        std::string getNombreAnimal() const;
+        int getGrandeza() const;
+        bool operator<(const Animal& other) const;
+        friend std::ostream& operator<<(std::ostream& os, const Animal& animal);
 };

@@ -29,10 +29,19 @@ Animal::Animal(int n){
     grandeza = value;
 }
 
-std::string Animal::getNombreAnimal(){
+std::string Animal::getNombreAnimal() const{
     return nombre_animal;
 }
 
-int Animal::getGrandeza(){
+int Animal::getGrandeza() const {
     return grandeza;
+}
+
+bool Animal::operator<(const Animal& other) const{
+    return this->grandeza < other.grandeza;
+}
+
+std::ostream& operator<<(std::ostream& os, const Animal& animal) {
+    os << "{Animal: " << animal.getNombreAnimal() << "; Grandeza: " << animal.getGrandeza() << "}" << std::endl;
+    return os;
 }

@@ -1,5 +1,5 @@
 #include "./escena.h"
-
+#include <sstream>
 
 Escena::Escena(std::set<Animal> animales)
     :animales(animales) {}
@@ -10,7 +10,7 @@ Escena::Escena(std::set<Animal> animales)
         return animales;
     }
 
-int Escena::getAnimalGreatness() {
+int Escena::getAnimalGreatness() const {
     int grandeza = 0;
     for (Animal animal : animales) {
         grandeza += animal.getGrandeza();
@@ -18,12 +18,19 @@ int Escena::getAnimalGreatness() {
     return grandeza;
 }
 
-std::string Escena::getAnimalsNames() {
-    std::string nombres;
-    for (Animal animal : animales) {
-        nombres = nombres + animal.getNombreAnimal();
-        nombres = nombres + "_";
+ std::string Escena::getAnimalsNames() const {
+    std::ostringstream oss;
+    for (const auto& animal : animales) {
+        oss << "|" <<animal.getNombreAnimal() << "|";
     }
-    return nombres;
+    return oss.str();
 }
-    
+
+bool Escena::operator<(const Escena& other) const {
+        return this->getAnimalGreatness() < other.getAnimalGreatness();
+}
+
+std::ostream& operator<<(std::ostream& os, const Escena& escene) {
+    os << "Escena: " << escene.getAnimalsNames() << std::endl;
+    return os;
+}    
