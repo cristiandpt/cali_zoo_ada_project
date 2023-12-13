@@ -9,8 +9,12 @@ class Animal {
         static const std::vector<std::string> nombresAnimales;
         
     public:
-        Animal(int n);
+        Animal(int grandeza);
         std::string getNombreAnimal();
         int getGrandeza();
+
+        bool operator<(const Animal& other) const {
+            return this->grandeza < other.grandeza;
+        }
     
 };

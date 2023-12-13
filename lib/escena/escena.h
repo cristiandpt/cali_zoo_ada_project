@@ -13,5 +13,8 @@ class Escena {
         std::set<Animal> getAnimals();
         int getAnimalGreatness();
         std::string getAnimalsNames();
+        /*bool operator==(const Escena& other) const {
+            return this->animales == other.animales;
+        }*/
 
 };

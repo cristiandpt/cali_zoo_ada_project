@@ -5,7 +5,7 @@ Escena::Escena(std::set<Animal> animales)
     :animales(animales) {}
 
 
- std::set<Animal> Escena::getAnimals() 
+std::set<Animal> Escena::getAnimals() 
     {
         return animales;
     }

@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include "./node.h"
+#include <stdexcept>
 
 template <typename T>
 
@@ -11,7 +12,7 @@ public:
     LinkedList(): head(nullptr){}
 
     // Destructor 
-    ~LinkedList(): {
+    ~LinkedList() {
         Node<T>* current = head;
         while (current != nullptr) {
             Node<T>* next = current->getNext();
@@ -21,7 +22,7 @@ public:
     } 
 
     //Agrega un elemento al final de la lista
-    void append(T value): {
+    void insert(T& value) override {
         Node<T>* newNode = new Node<T>(value);
         if (head == nullptr) {
             head = newNode;
@@ -35,7 +36,7 @@ public:
     }
 
     // Elimina un elemento de la lista
-    bool remove(T value): {
+    bool remove(T value) {
         Node<T>* current = head;
         Node<T>* previous = nullptr;
         while (current != nullptr)
@@ -65,19 +66,19 @@ public:
     } 
 
     // Busca un elemento en la lista
-    Node<T>* find(T value): {
+    /*bool findBool(const T& value) override{
         Node<T>* current = head;
         while (current != nullptr)
         {
             // Si el valor del nodo actual es igual al valor buscado
             if(current ->getValue() == value){
-                return current;
+                return true;
             }
             current = current->getNext();
         }
         // Si no se encontró el valor
-        return nullptr;
-    }
+        return false;
+    }*/
 
     // Accesor para head
     Node<T>* getHead() const { return head; } 
@@ -87,11 +88,11 @@ public:
      */
     std::size_t  max() override {
         Node<T>* current = head;
-        int max = current->getValue().getGrandeza();
+        int max = current->getValue().getAnimalGreatness();
         while (current != nullptr)
         {
-            if(current->getValue().getGrandeza() > max){
-                max = current->getValue().getGrandeza();
+            if(current->getValue().getAnimalGreatness() > max){
+                max = current->getValue().getAnimalGreatness();
             }
             current = current->getNext();
         }
@@ -103,11 +104,11 @@ public:
      */
     std::size_t  min() override {
         Node<T>* current = head;
-        int min = current->getValue().getGrandeza();
+        int min = current->getValue().getAnimalGreatness();
         while (current != nullptr)
         {
-            if(current->getValue().getGrandeza() < min){
-                min = current->getValue().getGrandeza();
+            if(current->getValue().getAnimalGreatness() < min){
+                min = current->getValue().getAnimalGreatness();
             }
             current = current->getNext();
         }
@@ -131,9 +132,10 @@ public:
     /*
      * Devuelve el animal en la posicion index
      */
-    T& operator[](std::size_t  index) override {
+
+    T& operator[](std::size_t  index) override{
         Node<T>* current = head;
-        int i = 0;
+        std::size_t i = 0;
         while (current != nullptr)
         {
             if(i == index){
@@ -142,7 +144,7 @@ public:
             i++;
             current = current->getNext();
         }
-        return nullptr;
+        throw std::out_of_range("Índice fuera de rango");
     }
 
 private:
