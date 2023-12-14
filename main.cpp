@@ -37,16 +37,11 @@ int main() {
         std::cout << "Invalid integer value for BaseContainer selection" << std::endl;
     }
 
-
-    std::cout << "Begin polimorphism test Base container" << std::endl;
-
     if (escene_ptr != nullptr) {
         
     }
 
-    std::cout << "Ending polimorphism test Base container" << std::endl;
-
-    Animal animal = Animal(4);
+    /* Animal animal = Animal(4);
 
     std::set<Animal> animals = {Animal(4), Animal(6), Animal(10)};
     Escena treeEscenes(animals);
@@ -67,6 +62,6 @@ int main() {
     }
 
     cout << animal.getNombreAnimal() << endl;
-    cout << animal.getGrandeza() << endl;
+    cout << animal.getGrandeza() << endl; */
     return 0;
 }
