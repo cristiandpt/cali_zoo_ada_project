@@ -5,7 +5,6 @@
 #include <stdexcept>
 
 template <typename T>
-
 class LinkedList: public BaseContainer<T> {
 public:
     // Constructor
@@ -25,8 +24,8 @@ public:
         return 0;
     }
 
-    std::size_t  mean() override {
-        return 0;
+    double mean() override {
+        return 0.0;
     }
     //Agrega un elemento al final de la lista
     void insert(T& value) override {
@@ -71,21 +70,6 @@ public:
         return false;
         
     } 
-
-    // Busca un elemento en la lista
-    /*bool findBool(const T& value) override{
-        Node<T>* current = head;
-        while (current != nullptr)
-        {
-            // Si el valor del nodo actual es igual al valor buscado
-            if(current ->getValue() == value){
-                return true;
-            }
-            current = current->getNext();
-        }
-        // Si no se encontró el valor
-        return false;
-    }*/
 
     // Accesor para head
     Node<T>* getHead() const { return head; } 
@@ -151,7 +135,48 @@ public:
             i++;
             current = current->getNext();
         }
-        throw std::out_of_range("Índice fuera de rango");
+            // If the index is out of bounds, throw an exception
+        throw std::out_of_range("Index out of bounds");
+    }
+
+     // Implement the Iterator for LinkedList
+    class Iterator : public BaseContainer<T>::Iterator {
+
+        public:
+            Iterator(Node<T>* node): current(node) {}
+
+            typename BaseContainer<T>::Iterator::reference operator*() const override {
+                return current->getValue();
+            }
+
+            Iterator& operator++() override {
+                if (current != nullptr) {
+                    current = current->getNext();
+                }
+                return *this;
+            }
+
+            bool operator==(const typename BaseContainer<T>::Iterator& other) const override {
+                return current == static_cast<const Iterator&>(other).current;
+            }
+
+            bool operator!=(const typename BaseContainer<T>::Iterator& other) const override {
+                return !(*this == other);
+            }
+
+            ~Iterator() = default;
+
+        private:
+            Node<T>* current;
+    };
+
+     // Implement the iterator functions
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
     }
 
     /*
@@ -205,9 +230,8 @@ public:
         return merged;
     }*/
 
-
-private:
-    Node<T>* head; // Puntero al primer elemento
+    private:
+        Node<T>* head; // Puntero al primer elemento
 };
 #endif
 

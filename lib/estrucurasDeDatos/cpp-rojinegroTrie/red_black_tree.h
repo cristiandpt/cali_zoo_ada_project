@@ -1,303 +1,285 @@
-#include "../node/node.h"
+#pragma once
+#include <iostream>
 #include <memory>
 #include "../../escena/escena.h"
-
-template <typename T>
-class RBNode {
-
-    private:
-        enum class Color { RED, BLACK };
-        T value;
-        Color color;
-        std::shared_ptr<RBNode<T>> left;
-        std::shared_ptr<RBNode<T>> right;
-        std::weak_ptr<RBNode<T>> parent;
-    
-    public:
-        
-        RBNode(const T& value, Color color = Color::RED)
-            : value(value), 
-              color(color), 
-              left(nullptr), 
-              right(nullptr), 
-              parent(nullptr) {}
-
-        bool operator<=(const RBNode& other) const {
-            return value <= other.value;
-        }
-
-        bool operator>=(const RBNode& other) const {
-            return value >= other.value;
-        }
-
-};
+#include "../base_container/base_container.h"
+#include <stdexcept>
+#include "./rb_node.h"
 
 template <typename T>
 class RedBlackTree: public BaseContainer<T> {
 
     public:
+
         RedBlackTree() : root(nullptr) {}
 
-        void insert(const T& data) {
-            auto newNode = std::make_shared<RBNode<T>>(std::move(data));
-            insertNode(newNode);
-        }
-
-        std::size_t  max() override {
-
-            std::shared_ptr<RBNode<T>> current = root;
-
+        std::size_t max() {
+            const std::shared_ptr<RBNode<T>> current = root;
+/* 
             if (current == nullptr) {
                 throw std::logic_error("Tree is empty");
             }
 
             while (current->right != nullptr) {
                 current = current->right;
-            }
+            } */
 
-            return current->value;
+            return 0; 
         }
-    
-        std::size_t  min() override {
 
-            const std::shared_ptr<RBNode<T>>& firstElement = begin().value;
+        std::size_t  sizeC() {
+            return this->length;
+        };
 
+
+        std::size_t min() override {
+
+            const std::shared_ptr<RBNode<T>>& firstElement = begin().getCurrent();
             if (firstElement == nullptr) {
-                throw
-                 std::logic_error("Tree is empty");
+                throw std::logic_error("Tree is empty");
             }     
-            return firstElement;
+
+            return firstElement->getValue().getAnimalGreatness();
         }
 
-        std::size_t  aggregate() override {
-            int sum = 0;
-            for (const std::shared_ptr<RBNode<T>>& node : *this) {
-                std::cout << node->value << std::endl;
+        std::size_t aggregate() override {
+
+            std::size_t sum = 0;
+            for (const auto& node : *this)  {
+                sum += node.getAnimalGreatness();
             }
             return sum;
         }
 
-        std::size_t  sizeC() override {
-            return size;
+        double mean() override {
+            return 0.0;
         }
 
+        void insert(T& value) {
+            std::shared_ptr<RBNode<T>> node = std::make_shared<RBNode<T>>(value);
+            insertNode(node);
+        }
 
-        void insertNode(std::shared_ptr<RBNode<T>>&& node) {
+        void insertNode(std::shared_ptr<RBNode<T>> node) {
             // Step 1: Perform a standard BST insertion
             std::shared_ptr<RBNode<T>> parentNode = nullptr;
             std::shared_ptr<RBNode<T>> currentNode = root;
 
             while (currentNode != nullptr) {
                 parentNode = currentNode;
-                if (node->value < current->value) {
-                    currentNode = current->left;
+                if (node->getValue() < currentNode->getValue()) {
+                    currentNode = currentNode->getLeft();
                 } else {
-                    currentNode = current->right;
+                    currentNode = currentNode->getRight();
                 }
             }
 
-            node->parent = parentNode;
+            node->setParent(parentNode);
 
             if (parentNode == nullptr) {
                 root = node;
-            } else if (node->value < parent->value) {
-                parent->left = node;
+            } else if (node->getValue() < parentNode->getValue()) {
+                parentNode->getLeft() = node;
             } else {
-                parent->right = node;
+                parentNode->getRight() = node;
             }
 
             // Step 2: Color the newly inserted node as RED
-            node->color = RBNode<T>::Color::RED;
+            node->setColor(RBNode<T>::Color::RED); 
 
-            length++;
-            // Step 3: Fix any violations of the Red-Black Tree properties
+            this->length++;
+
+            // Rectifica el arbol para que siga conservado
+            // las propiedades de ser un arbol rojinegro.
             fixInsertionViolations(node);
         }
 
-        void fixInsertionViolations(std::shared_ptr<RBNode<T>>& node) {
-            while (node != root && node->parent.lock()->color == RBNode<T>::Color::RED) {
-                if (node->parent.lock() == node->parent.lock()->parent.lock()->left) {
-                    std::shared_ptr<RBNode<T>> uncle = node->parent.lock()->parent.lock()->right;
+        void rotateLeft(std::shared_ptr<RBNode<T>> node) {
+            std::shared_ptr<RBNode<T>> pivot = node->getRight();
 
-                    if (uncle != nullptr && uncle->color == RBNode<T>::Color::RED) {
-                        node->parent.lock()->color = RBNode<T>::Color::BLACK;
-                        uncle->color = RBNode<T>::Color::BLACK;
-                        node->parent.lock()->parent.lock()->color = RBNode<T>::Color::RED;
-                        node = node->parent.lock()->parent.lock();
+            node->getRight() = pivot->getLeft();
+            if (pivot->getLeft() != nullptr) {
+                pivot->getLeft()->setParent(node);
+            }
+
+            pivot->setParent(node->getParent());
+            if (node->getParent().lock() == nullptr) {
+                root = pivot;
+            } else if (node == node->getParent().lock()->getLeft()) {
+                node->getParent().lock()->setLeft(pivot);
+            } else {
+                node->getParent().lock()->setRight(pivot);
+            }
+
+            pivot->setLeft(node);
+            node->setParent(pivot);
+        }
+
+        void rotateRight(std::shared_ptr<RBNode<T>> node) {
+            std::shared_ptr<RBNode<T>> pivot = node->getLeft();
+
+            node->getLeft() = pivot->getRight();
+            if (pivot->getRight() != nullptr) {
+                pivot->getRight()->setParent(node);
+            }
+
+            pivot->setParent(node->getParent());
+            if (node->getParent().lock() == nullptr) {
+                root = pivot;
+            } else if (node == node->getParent().lock()->getRight()) {
+                node->getParent().lock()->setRight(pivot);
+            } else {
+                node->getParent().lock()->setLeft(pivot);
+            }
+
+            pivot->setRight(node);
+            node->setParent(pivot);
+        }
+
+
+        void fixInsertionViolations(std::shared_ptr<RBNode<T>>& node) {
+            while (node != root && node->getParent().lock()->getColor() == RBNode<T>::Color::RED) {
+                if (node->getParent().lock() == node->getParent().lock()->getParent().lock()->getLeft()) {
+                    std::shared_ptr<RBNode<T>> uncle = node->getParent().lock()->getParent().lock()->getRight();
+
+                    if (uncle != nullptr && uncle->getColor() == RBNode<T>::Color::RED) {
+                        node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
+                        uncle->setColor(RBNode<T>::Color::BLACK);
+                        node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
+                        node = node->getParent().lock()->getParent().lock();
                     } else {
-                        if (node == node->parent.lock()->right) {
-                            node = node->parent.lock();
+                        if (node == node->getParent().lock()->getRight()) {
+                            node = node->getParent().lock();
                             rotateLeft(node);
                         }
 
-                        node->parent.lock()->color = RBNode<T>::Color::BLACK;
-                        node->parent.lock()->parent.lock()->color = RBNode<T>::Color::RED;
-                        rotateRight(node->parent.lock()->parent.lock());
+                        node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
+                        node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
+                        rotateRight(node->getParent().lock()->getParent().lock());
                     }
                 } else {
-                    std::shared_ptr<RBNode<T>> uncle = node->parent.lock()->parent.lock()->left;
+                    std::shared_ptr<RBNode<T>> uncle = node->getParent().lock()->getParent().lock()->getLeft();
 
-        if (uncle != nullptr && uncle->color == RBNode<T>::Color::RED) {
-            node->parent.lock()->color = RBNode<T>::Color::BLACK;
-            uncle->color = RBNode<T>::Color::BLACK;
-            node->parent.lock()->parent.lock()->color = RBNode<T>::Color::RED;
-            node = node->parent.lock()->parent.lock();
-        } else {
-            if (node == node->parent.lock()->left) {
-                node = node->parent.lock();
-                rotateRight(node);
-            }
+                    if (uncle != nullptr && uncle->getColor() == RBNode<T>::Color::RED) {
+                        node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
+                        uncle->setColor(RBNode<T>::Color::BLACK);
+                        node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
+                        node = node->getParent().lock()->getParent().lock();
+                    } else {
+                        if (node == node->getParent().lock()->getLeft()) {
+                            node = node->getParent().lock();
+                            rotateRight(node);
+                        }
 
-            node->parent.lock()->color = RBNode<T>::Color::BLACK;
-            node->parent.lock()->parent.lock()->color = RBNode<T>::Color::RED;
-            rotateLeft(node->parent.lock()->parent.lock());
-        }
+                        node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
+                        node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
+                        rotateLeft(node->getParent().lock()->getParent().lock());
+                    }
                 }
             }
 
-            root->color = RBNode<T>::Color::BLACK;
+            root->setColor(RBNode<T>::Color::BLACK);
         }
 
-        void rotateLeft(std::shared_ptr<RBNode<T>>& node) {
-            std::shared_ptr<RBNode<T>> pivot = node->right;
-
-            node->right = pivot->left;
-            if (pivot->left != nullptr) {
-                pivot->left->parent = node;
-            }
-
-            pivot->parent = node->parent;
-            if (node->parent.lock() == nullptr) {
-                root = pivot;
-            } else if (node == node->parent.lock()->left) {
-                node->parent.lock()->left = pivot;
-            } else {
-                node->parent.lock()->right = pivot;
-            }
-
-            pivot->left = node;
-            node->parent = pivot;
+        T& operator[](std::size_t  index) override {
+            index++;
+            return root->getValue();
         }
 
-        void rotateRight(std::shared_ptr<RBNode<T>>& node) {
-            std::shared_ptr<RBNode<T>> pivot = node->left;
+        class Iterator: public BaseContainer<T>::Iterator {
 
-            node->left = pivot->right;
-            if (pivot->right != nullptr) {
-                pivot->right->parent = node;
-            }
+            public:
+               
+                   Iterator(std::shared_ptr<RBNode<T>> node) : current(node) {
+                    // Find the leftmost node in the tree
+                        while (current != nullptr && current->getLeft() != nullptr) {
+                            current = current->getLeft();
+                        }
+                    }
 
-            pivot->parent = node->parent;
-            if (node->parent.lock() == nullptr) {
-                root = pivot;
-            } else if (node == node->parent.lock()->right) {
-                node->parent.lock()->right = pivot;
-            } else {
-                node->parent.lock()->left = pivot;
-            }
+                    typename BaseContainer<T>::Iterator::reference operator*() const {
+                        return current->getValue();
+                    }
 
-            pivot->right = node;
-            node->parent = pivot;
+                    typename BaseContainer<T>::Iterator& operator++() {
+                        if (current == nullptr) {
+                            return *this;
+                        }
+
+                        // If the current node has a right child, find the leftmost node in its right subtree
+                        if (current->getRight() != nullptr) {
+                            current = current->getRight();
+                            while (current->getLeft() != nullptr) {
+                                current = current->getLeft();
+                            }
+                        } else {
+                            // Otherwise, go up the tree until we find the first parent whose value is greater than the current node
+                            std::shared_ptr<RBNode<T>> parent = current->getParent().lock();
+                            while (parent != nullptr && current == parent->getRight()) {
+                                current = parent;
+                                parent = parent->getParent().lock();
+                            }
+                            current = parent;
+                        }
+                        return *this;
+                    }
+
+                    bool operator==(const typename BaseContainer<T>::Iterator& other) const override {
+                        return current == static_cast<const Iterator&>(other).current;
+                    }
+
+                    bool operator!=(const typename BaseContainer<T>::Iterator& other) const override {
+                        return !(*this == other);
+                    }
+
+                    std::shared_ptr<RBNode<T>> getCurrent() const {
+                        return current;
+                    }
+
+            private:
+                std::shared_ptr<RBNode<T>> current;
+
+        };
+
+         Iterator begin() {
+            return Iterator(root);
+         }
+
+        Iterator end() {
+            return Iterator(nullptr);
         }
 
         void inorderTraversal() {
-            inorderTraversal(root);
+             inorderTraversal(root);
         }
 
+    private:
 
-    class Iterator {
-        public:
-            using iterator_category = std::forward_iterator_tag;
-            using value_type = T;
-            using difference_type = std::ptrdiff_t;
-            using pointer = T*;
-            using reference = T&;
-
-            explicit Iterator(std::shared_ptr<RBNode<T>> node) : current(node) {
-                // Find the leftmost node in the tree
-                while (current != nullptr && current->left != nullptr) {
-                    current = current->left;
-                }
+        std::shared_ptr<RBNode<T>> root;
+        int length = 0;
+        
+        void inorderTraversal(std::shared_ptr<RBNode<T>> node) {
+            if (node != nullptr) {
+                // Recorrise el subarbol izquierdo
+                inorderTraversal(node->getLeft());
+                // Cuando regresa al nodo actual, imprime el valor asociado al nodo.
+                std::cout << node->getValue() << " ";
+                // TRecorrer el subarbol derecho.
+                inorderTraversal(node->getRight());
             }
-
-            reference operator*() const {
-                return current->value;
-            }
-
-            Iterator& operator++() {
-                if (current == nullptr) {
-                    return *this;
-                }
-
-                // If the current node has a right child, find the leftmost node in its right subtree
-                if (current->right != nullptr) {
-                    current = current->right;
-                    while (current->left != nullptr) {
-                        current = current->left;
-                    }
-                } else {
-                    // Otherwise, go up the tree until we find the first parent whose value is greater than the current node
-                    std::shared_ptr<RBNode<T>> parent = current->parent.lock();
-                    while (parent != nullptr && current == parent->right) {
-                        current = parent;
-                        parent = parent->parent.lock();
-                    }
-                    current = parent;
-                }
-
-                return *this;
-            }
-
-            bool operator==(const Iterator& other) const {
-                return current == other.current;
-            }
-
-            bool operator!=(const Iterator& other) const {
-                return !(*this == other);
-            }
-
-        private:
-            std::shared_ptr<RBNode<T>> current;
-    };
-
-    Iterator begin() {
-        return Iterator(root);
-    }
-
-    Iterator end() {
-        return Iterator(nullptr);
-    }
-
-private:
-    std::shared_ptr<RBNode<T>> root;
-    void inorderTraversal(std::shared_ptr<RBNode<T>> node) {
-        if (node == nullptr) {
-            return;
         }
+     
 
-        inorderTraversal(node->left);
-        std::cout << "Value: " << node->value << ", Color: ";
-        if (node->color == RBNode<T>::Color::RED) {
-            std::cout << "RED";
-        } else {
-            std::cout << "BLACK";
-        }
-        std::cout << std::endl;
-        inorderTraversal(node->right);
-    }
-    
 };
 
-
+/* 
 template <>
 class RedBlackTree<Escena> : public BaseContainer<Escena> {
  
-    public:
-        std::size_t  aggregate() override {
-                int sum = 0;
-                for (const std::shared_ptr<RBNode<T>>& node : *this) {
-                    sum += node->value.getAnimalGreatness();
-                }
-                return sum;
-            }
-};
+  public:
+
+        std::size_t aggregate() override;
+
+    
+};  
+  */
