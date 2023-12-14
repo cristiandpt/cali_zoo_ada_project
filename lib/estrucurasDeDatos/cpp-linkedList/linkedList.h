@@ -21,6 +21,13 @@ public:
         }
     } 
 
+    std::size_t  aggregate() override {
+        return 0;
+    }
+
+    std::size_t  mean() override {
+        return 0;
+    }
     //Agrega un elemento al final de la lista
     void insert(T& value) override {
         Node<T>* newNode = new Node<T>(value);
