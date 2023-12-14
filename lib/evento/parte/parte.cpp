@@ -4,6 +4,7 @@ Parte::Parte(BaseContainer<Escena>& escenas) : escenas(escenas) {
     // constructor implementation
 }
 
+
 Parte::~Parte() {
     // destructor implementation
 }
@@ -12,7 +13,7 @@ BaseContainer<Escena>& Parte::getEscenas() {
     return escenas;
 }
 
-int Parte::getParteGreatness() {
+int Parte::getAnimalGreatness() {
     int grandeza = 0;
     for (std::size_t i = 0; i < escenas.sizeC(); i++) {
         grandeza += escenas[i].getAnimalGreatness();
