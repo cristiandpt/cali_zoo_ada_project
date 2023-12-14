@@ -11,6 +11,7 @@ class BaseContainer {
       virtual double mean() = 0;
       virtual ~BaseContainer() = default;
       virtual void insert(T& value) = 0;
+      virtual void mergeSort() = 0;
    
       class Iterator {
          public:
@@ -31,8 +32,7 @@ class BaseContainer {
   protected:
       int length{};
 
-    /*virtual std::pair<BaseContainer<T>*,BaseContainer<T>*> divide() = 0;
-    virtual BaseContainer<T>* merge(BaseContainer<T>* other) = 0;*/
+    
 
     //virtual T& find(const T& value) = 0;
     //virtual bool findBool(const T& value) = 0;

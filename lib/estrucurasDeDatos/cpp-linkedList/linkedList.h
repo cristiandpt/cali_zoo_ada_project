@@ -182,7 +182,7 @@ public:
     /*
      * Divide la lista en dos
      */
-    /*std::pair<BaseContainer<T>*,BaseContainer<T>*> divide() override{
+    std::pair<LinkedList<T>*,LinkedList<T>*> divide() override{
 
         LinkedList<T>* firstHalf = new LinkedList<T>();
         LinkedList<T>* secondHalf = new LinkedList<T>();
@@ -203,7 +203,7 @@ public:
         return std::make_pair(firstHalf, secondHalf);
     }
 
-    BaseContainer<T>* merge(BaseContainer<T>* other) {
+    LinkedList<T>* merge(LinkedList<T>* other) {
         LinkedList<T>* merged = new LinkedList<T>();
         Node<T> *ptr1 = this->head, *ptr2 = other->head;
 
@@ -228,7 +228,26 @@ public:
         }
 
         return merged;
-    }*/
+    }
+
+    void mergeSort() override {
+        if (this == nullptr || this->sizeC() <= 1) {
+            return; // Caso base
+        }
+
+        // Dividir la lista
+        auto [firstHalf, secondHalf] = this->divide();
+
+        // Ordenar cada mitad recursivamente
+        mergeSort(firstHalf);
+        mergeSort(secondHalf);
+
+        // Fusionar las mitades ordenadas
+        list = firstHalf->merge(secondHalf);
+
+        // Aquí, maneja la limpieza de la memoria si es necesario
+    }
+
 
     private:
         Node<T>* head; // Puntero al primer elemento
