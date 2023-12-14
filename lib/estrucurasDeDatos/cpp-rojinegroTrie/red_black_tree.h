@@ -15,16 +15,16 @@ class RedBlackTree: public BaseContainer<T> {
 
         std::size_t max() {
             const std::shared_ptr<RBNode<T>> current = root;
-/* 
+
             if (current == nullptr) {
                 throw std::logic_error("Tree is empty");
             }
 
             while (current->right != nullptr) {
                 current = current->right;
-            } */
+            }
 
-            return 0; 
+            return current->getValue().getAnimalGreatness();; 
         }
 
         std::size_t  sizeC() {
@@ -52,7 +52,20 @@ class RedBlackTree: public BaseContainer<T> {
         }
 
         double mean() override {
-            return 0.0;
+            return aggregate()/length;
+        }
+
+        void frecuency() {
+            std::map<std::string> map;
+            for (const auto& node : *this)  {
+                const animalName = node->getValue().getAnimalName();
+                if (map.contains(animalName)) {
+                    map[animalName]++
+                } else {
+                    map[animalName] = 1;
+                }
+            }
+            return max(map);
         }
 
         void insert(T& value) {
