@@ -4,14 +4,13 @@
 #include "./node.h"
 
 template <typename T>
-
 class LinkedList: public BaseContainer<T> {
 public:
     // Constructor
     LinkedList(): head(nullptr){}
 
     // Destructor 
-    ~LinkedList(): {
+    ~LinkedList() {
         Node<T>* current = head;
         while (current != nullptr) {
             Node<T>* next = current->getNext();
@@ -21,7 +20,7 @@ public:
     } 
 
     //Agrega un elemento al final de la lista
-    void append(T value): {
+    void append(T value) {
         Node<T>* newNode = new Node<T>(value);
         if (head == nullptr) {
             head = newNode;
@@ -35,7 +34,7 @@ public:
     }
 
     // Elimina un elemento de la lista
-    bool remove(T value): {
+    bool remove(T value) {
         Node<T>* current = head;
         Node<T>* previous = nullptr;
         while (current != nullptr)
@@ -65,7 +64,7 @@ public:
     } 
 
     // Busca un elemento en la lista
-    Node<T>* find(T value): {
+    Node<T>* find(T value) {
         Node<T>* current = head;
         while (current != nullptr)
         {
@@ -87,11 +86,11 @@ public:
      */
     std::size_t  max() override {
         Node<T>* current = head;
-        int max = current->getValue().getGrandeza();
+        int max = current->getValue().getAnimalGreatness();
         while (current != nullptr)
         {
-            if(current->getValue().getGrandeza() > max){
-                max = current->getValue().getGrandeza();
+            if(current->getValue().getAnimalGreatness() > max){
+                max = current->getValue().getAnimalGreatness();
             }
             current = current->getNext();
         }
@@ -103,11 +102,11 @@ public:
      */
     std::size_t  min() override {
         Node<T>* current = head;
-        int min = current->getValue().getGrandeza();
+        int min = current->getValue().getAnimalGreatness();
         while (current != nullptr)
         {
-            if(current->getValue().getGrandeza() < min){
-                min = current->getValue().getGrandeza();
+            if(current->getValue().getAnimalGreatness() < min){
+                min = current->getValue().getAnimalGreatness();
             }
             current = current->getNext();
         }
@@ -131,9 +130,9 @@ public:
     /*
      * Devuelve el animal en la posicion index
      */
-    T& operator[](std::size_t  index) override {
+    T& operator[](std::size_t  index) override{
         Node<T>* current = head;
-        int i = 0;
+        std::size_t i = 0; 
         while (current != nullptr)
         {
             if(i == index){
@@ -142,8 +141,59 @@ public:
             i++;
             current = current->getNext();
         }
-        return nullptr;
+            // If the index is out of bounds, throw an exception
+        throw std::out_of_range("Index out of bounds");
     }
+
+     // Implement the Iterator for LinkedList
+    class Iterator : public BaseContainer<T>::Iterator {
+
+        public:
+            Iterator(Node<T>* node): current(node) {}
+
+            typename BaseContainer<T>::Iterator::reference operator*() const override {
+                return current->getValue();
+            }
+
+            Iterator& operator++() override {
+                if (current != nullptr) {
+                    current = current->getNext();
+                }
+                return *this;
+            }
+
+            bool operator==(const typename BaseContainer<T>::Iterator& other) const override {
+                return current == static_cast<const Iterator&>(other).current;
+            }
+
+            bool operator!=(const typename BaseContainer<T>::Iterator& other) const override {
+                return !(*this == other);
+            }
+
+            ~Iterator() = default;
+
+        private:
+            Node<T>* current;
+    };
+
+     // Implement the iterator functions
+    Iterator begin() {
+        return Iterator(head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
+    }
+
+    std::size_t  aggregate() override {
+        return 0;
+    };
+
+    double  mean() override { return 0.0; };
+    void insert(T& value) {
+        append(value);
+    };
+
 
 private:
     Node<T>* head; // Puntero al primer elemento

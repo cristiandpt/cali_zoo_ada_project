@@ -11,8 +11,25 @@ class BaseContainer {
       virtual std::size_t  sizeC() = 0;
       virtual double  mean() = 0;
       virtual ~BaseContainer() = default;
-      virtual void insert(T& value) = 0; 
-  
+      virtual void insert(T& value) = 0;
+   
+      class Iterator {
+         public:
+            using iterator_category = std::forward_iterator_tag;
+            using value_type = T;
+            using difference_type = std::ptrdiff_t;
+            using pointer = T*;
+            using reference = T&;
+
+            virtual reference operator*() const = 0;
+            virtual Iterator& operator++() = 0;
+            virtual bool operator==(const Iterator& other) const = 0;
+            virtual bool operator!=(const Iterator& other) const = 0;
+            virtual ~Iterator() = default;
+       };
+   
+
   protected:
       int length{};
+
 };

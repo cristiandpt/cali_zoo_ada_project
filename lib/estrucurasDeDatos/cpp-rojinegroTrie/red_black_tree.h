@@ -186,15 +186,10 @@ class RedBlackTree: public BaseContainer<T> {
             return root->getValue();
         }
 
-        class Iterator {
+        class Iterator: public BaseContainer<T>::Iterator {
 
             public:
-                using iterator_category = std::forward_iterator_tag;
-                using value_type = T;
-                using difference_type = std::ptrdiff_t;
-                using pointer = T*;
-                using reference = T&;
-
+               
                    Iterator(std::shared_ptr<RBNode<T>> node) : current(node) {
                     // Find the leftmost node in the tree
                         while (current != nullptr && current->getLeft() != nullptr) {
@@ -202,11 +197,11 @@ class RedBlackTree: public BaseContainer<T> {
                         }
                     }
 
-                    reference operator*() const {
+                    typename BaseContainer<T>::Iterator::reference operator*() const {
                         return current->getValue();
                     }
 
-                    Iterator& operator++() {
+                    typename BaseContainer<T>::Iterator& operator++() {
                         if (current == nullptr) {
                             return *this;
                         }
@@ -226,15 +221,14 @@ class RedBlackTree: public BaseContainer<T> {
                             }
                             current = parent;
                         }
-
                         return *this;
                     }
 
-                    bool operator==(const Iterator& other) const {
-                        return current == other.current;
+                    bool operator==(const typename BaseContainer<T>::Iterator& other) const override {
+                        return current == static_cast<const Iterator&>(other).current;
                     }
 
-                    bool operator!=(const Iterator& other) const {
+                    bool operator!=(const typename BaseContainer<T>::Iterator& other) const override {
                         return !(*this == other);
                     }
 
