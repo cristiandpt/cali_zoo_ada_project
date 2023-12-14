@@ -1,5 +1,4 @@
 #pragma once
-
 template <typename T>
 class BaseContainer {
 
@@ -31,5 +30,11 @@ class BaseContainer {
 
   protected:
       int length{};
+
+    /*virtual std::pair<BaseContainer<T>*,BaseContainer<T>*> divide() = 0;
+    virtual BaseContainer<T>* merge(BaseContainer<T>* other) = 0;*/
+
+    //virtual T& find(const T& value) = 0;
+    //virtual bool findBool(const T& value) = 0;
 
 };

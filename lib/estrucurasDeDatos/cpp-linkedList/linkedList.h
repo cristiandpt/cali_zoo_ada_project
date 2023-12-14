@@ -2,6 +2,7 @@
 #define LINKEDLIST_H
 
 #include "./node.h"
+#include <stdexcept>
 
 template <typename T>
 class LinkedList: public BaseContainer<T> {
@@ -19,8 +20,15 @@ public:
         }
     } 
 
+    std::size_t  aggregate() override {
+        return 0;
+    }
+
+    std::size_t  mean() override {
+        return 0;
+    }
     //Agrega un elemento al final de la lista
-    void append(T value) {
+    void insert(T& value) override {
         Node<T>* newNode = new Node<T>(value);
         if (head == nullptr) {
             head = newNode;
@@ -62,21 +70,6 @@ public:
         return false;
         
     } 
-
-    // Busca un elemento en la lista
-    Node<T>* find(T value) {
-        Node<T>* current = head;
-        while (current != nullptr)
-        {
-            // Si el valor del nodo actual es igual al valor buscado
-            if(current ->getValue() == value){
-                return current;
-            }
-            current = current->getNext();
-        }
-        // Si no se encontró el valor
-        return nullptr;
-    }
 
     // Accesor para head
     Node<T>* getHead() const { return head; } 
@@ -130,9 +123,10 @@ public:
     /*
      * Devuelve el animal en la posicion index
      */
+
     T& operator[](std::size_t  index) override{
         Node<T>* current = head;
-        std::size_t i = 0; 
+        std::size_t i = 0;
         while (current != nullptr)
         {
             if(i == index){
@@ -190,13 +184,60 @@ public:
     };
 
     double  mean() override { return 0.0; };
-    void insert(T& value) {
-        append(value);
-    };
 
+    /*
+     * Divide la lista en dos
+     */
+    /*std::pair<BaseContainer<T>*,BaseContainer<T>*> divide() override{
 
-private:
-    Node<T>* head; // Puntero al primer elemento
+        LinkedList<T>* firstHalf = new LinkedList<T>();
+        LinkedList<T>* secondHalf = new LinkedList<T>();
+        Node<T>* slow = head;
+        Node<T>* fast = head;
+        Node<T>* prev = nullptr;
+
+        while (fast && fast->next) {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        if (prev) prev->next = nullptr;
+        firstHalf->head = head;
+        secondHalf->head = slow;
+
+        return std::make_pair(firstHalf, secondHalf);
+    }
+
+    BaseContainer<T>* merge(BaseContainer<T>* other) {
+        LinkedList<T>* merged = new LinkedList<T>();
+        Node<T> *ptr1 = this->head, *ptr2 = other->head;
+
+        while (ptr1 && ptr2) {
+            if (ptr1->value < ptr2->value) {
+                merged->insert(ptr1->value);
+                ptr1 = ptr1->next;
+            } else {
+                merged->insert(ptr2->value);
+                ptr2 = ptr2->next;
+            }
+        }
+
+        while (ptr1) {
+            merged->insert(ptr1->value);
+            ptr1 = ptr1->next;
+        }
+
+        while (ptr2) {
+            merged->insert(ptr2->value);
+            ptr2 = ptr2->next;
+        }
+
+        return merged;
+    }*/
+
+    private:
+        Node<T>* head; // Puntero al primer elemento
 };
 #endif
 

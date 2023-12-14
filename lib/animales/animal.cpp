@@ -5,14 +5,15 @@ const std::vector<std::string> nombresAnimales = {"Leon","Tigre","Elefante","Jir
 
 int tamNombres = nombresAnimales.size();
 
-int generarGrandeza(int n){
+/*int generarGrandeza(int n){
     std::random_device rd;
     std::mt19937 engine(rd());
     std::uniform_int_distribution<int> distribGrandeza(1, n);
     int j = distribGrandeza(engine);
     return j;
-}
+}*/
 
+//Genera un nombre aleatorio para el animal en el rango del nombresAnimales
 std::string generarNombre(){
     std::random_device rd;
     std::mt19937 engine(rd());
@@ -21,10 +22,10 @@ std::string generarNombre(){
     return nombresAnimales[i];
 }
 
-Animal::Animal(int n){   
+Animal::Animal(int grandeza){
+    
     nombre_animal = generarNombre();
-    int value = generarGrandeza(n);
-    grandeza = value;
+    this->grandeza = grandeza;
 }
 
 std::string Animal::getNombreAnimal() const{

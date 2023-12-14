@@ -11,9 +11,11 @@ class Animal {
         static const std::vector<std::string> nombresAnimales;
         
     public:
-        Animal(int n);
-        std::string getNombreAnimal() const;
-        int getGrandeza() const;
+     
+        Animal(int grandeza);
+        std::string getNombreAnimal();
+        int getGrandeza();
         bool operator<(const Animal& other) const;
         friend std::ostream& operator<<(std::ostream& os, const Animal& animal);
+    
 };
