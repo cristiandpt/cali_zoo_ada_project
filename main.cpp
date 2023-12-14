@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 
 #include "lib/animales/animal.h"
 #include "lib/escena/escena.h"
@@ -20,6 +21,7 @@ int main() {
     std::cout << "   1). LinkedList" << std::endl;
     std::cout << "   2). Tabla Hash" << std::endl;
     std::cout << "   3). Árbol Rojinegro" << std::endl;
+    std::cout << "   4). Generar sets de pruebas" << std::endl;
 
     std::string userInput;
     // Read user input from the console
@@ -27,7 +29,28 @@ int main() {
 
     std::cout << "Su entrada fue: " << userInput << std::endl;
 
+    std::cout << "Ingrese k: " << std::endl;
+    std::string k;
+    // Read user input from the console
+    std::cin >> k;
+
+
     int intValue = (std::stoi(userInput)) - 1;
+
+
+    LinkedList<Parte> partes;
+    LinkedList<Escena> escenas;
+    LinkedList<Escena> escenasVacia;
+    Evento evento = Evento(6, 3, 2, partes, escenas);
+    evento.generarAnimales();
+    evento.llenarEscenas();
+    evento.crearApertura();
+    
+    /**/
+    for(int i = 0; i<2; i++){
+        LinkedList<Escena>* misescenaVacia = new LinkedList<Escena>();
+        evento.agregarPartes(misescenaVacia);
+    }
 
     std::shared_ptr<BaseContainer<Escena>> escene_ptr = nullptr;
 
@@ -68,19 +91,6 @@ int main() {
     cout << animal.getNombreAnimal() << endl;
     cout << animal.getGrandeza() << endl; */
     
-    LinkedList<Parte> partes;
-    LinkedList<Escena> escenas;
-    LinkedList<Escena> escenasVacia;
-    Evento evento = Evento(6, 3, 2, partes, escenas);
-    evento.generarAnimales();
-    evento.llenarEscenas();
-    evento.crearApertura();
-    
-    /**/
-    for(int i = 0; i<2; i++){
-        LinkedList<Escena>* misescenaVacia = new LinkedList<Escena>();
-        evento.agregarPartes(misescenaVacia);
-    }
     /*/
     //evento.agregarParte(misescenasVacias);
 

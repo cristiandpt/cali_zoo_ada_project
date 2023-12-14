@@ -24,8 +24,8 @@ public:
         return 0;
     }
 
-    std::size_t  mean() override {
-        return 0;
+    double mean() override {
+        return 0.0;
     }
     //Agrega un elemento al final de la lista
     void insert(T& value) override {
@@ -178,12 +178,6 @@ public:
     Iterator end() {
         return Iterator(nullptr);
     }
-
-    std::size_t  aggregate() override {
-        return 0;
-    };
-
-    double  mean() override { return 0.0; };
 
     /*
      * Divide la lista en dos
