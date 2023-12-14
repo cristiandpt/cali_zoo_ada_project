@@ -5,14 +5,10 @@
 #include "lib/estrucurasDeDatos/cpp-linkedList/linkedList.h"
 
 
-using namespace std;
+//using namespace std;
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    Animal animal = Animal(4);
-    cout << animal.getNombreAnimal() << endl;
-    cout << animal.getGrandeza() << endl;
-    cout << "///////////////////////" << endl;
+    
     LinkedList<Parte> partes;
     LinkedList<Escena> escenas;
     LinkedList<Escena> escenasVacia;
@@ -20,31 +16,31 @@ int main() {
     evento.generarAnimales();
     evento.llenarEscenas();
     evento.crearApertura();
-    cout<<partes[0].getParteAnimalsNames()<<endl;
-    //std::stack<int> randStack = evento.generarStackRandom();
-    for(int i = 0; i<2; i++){
-        
-        LinkedList<Escena>* misescenaVacia = new LinkedList<Escena>();
-        /*int indice = randStack.top();
-        randStack.pop();*/
-        evento.agregarPartes(misescenaVacia);
-        cout << partes[1].getParteAnimalsNames() << endl;
-    }
-    //evento.agregarParte(misescenasVacias);
     
-    cout << "generando partes" << endl;
-    for(int i = 0; partes.sizeC(); i++){
-        cout << partes[i].getParteAnimalsNames() << endl;
+    /**/
+    for(int i = 0; i<2; i++){
+        LinkedList<Escena>* misescenaVacia = new LinkedList<Escena>();
+        evento.agregarPartes(misescenaVacia);
     }
-    cout << "generando animales" << endl;
+    /*/
+    //evento.agregarParte(misescenasVacias);
+
+    std::cout << "generando partes" << std::endl;
+    for(int i = 0; i< partes.sizeC(); i++){
+        std::cout << partes[i].getParteAnimalsNames() << std::endl;
+        std::cout << partes[i].getAnimalGreatness() << std::endl;
+    }
+    std::cout << "generando animales" << std::endl;
     for(Animal animal : evento.getAnimales()){
-        cout << animal.getNombreAnimal() << endl;
+        std::cout << animal.getNombreAnimal() << std::endl;
+        std::cout << animal.getGrandeza() << std::endl;
     }
 
-    cout << "generando escenas" << endl;
-    for(int i = 0; escenas.sizeC(); i++){
-        cout << escenas[i].getAnimalsNames() << endl;
-    }
+    std::cout << "generando escenas" << std::endl;
+    for(int i = 0; i<  escenas.sizeC(); i++){
+        std::cout << escenas[i].getAnimalsNames() << std::endl;
+        std::cout << escenas[i].getAnimalGreatness() << std::endl;
+    }*/
     
     return 0;
 }

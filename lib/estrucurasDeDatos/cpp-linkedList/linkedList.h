@@ -147,6 +147,58 @@ public:
         throw std::out_of_range("Índice fuera de rango");
     }
 
+    /*
+     * Divide la lista en dos
+     */
+    /*std::pair<BaseContainer<T>*,BaseContainer<T>*> divide() override{
+
+        LinkedList<T>* firstHalf = new LinkedList<T>();
+        LinkedList<T>* secondHalf = new LinkedList<T>();
+        Node<T>* slow = head;
+        Node<T>* fast = head;
+        Node<T>* prev = nullptr;
+
+        while (fast && fast->next) {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        if (prev) prev->next = nullptr;
+        firstHalf->head = head;
+        secondHalf->head = slow;
+
+        return std::make_pair(firstHalf, secondHalf);
+    }
+
+    BaseContainer<T>* merge(BaseContainer<T>* other) {
+        LinkedList<T>* merged = new LinkedList<T>();
+        Node<T> *ptr1 = this->head, *ptr2 = other->head;
+
+        while (ptr1 && ptr2) {
+            if (ptr1->value < ptr2->value) {
+                merged->insert(ptr1->value);
+                ptr1 = ptr1->next;
+            } else {
+                merged->insert(ptr2->value);
+                ptr2 = ptr2->next;
+            }
+        }
+
+        while (ptr1) {
+            merged->insert(ptr1->value);
+            ptr1 = ptr1->next;
+        }
+
+        while (ptr2) {
+            merged->insert(ptr2->value);
+            ptr2 = ptr2->next;
+        }
+
+        return merged;
+    }*/
+
+
 private:
     Node<T>* head; // Puntero al primer elemento
 };

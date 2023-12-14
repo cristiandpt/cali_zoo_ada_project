@@ -106,12 +106,12 @@ void Evento::crearApertura(){
 }
 
 void Evento::agregarPartes(BaseContainer<Escena>* escenasVacia){
-    cout << "llegue aqui" << endl;
+    
     Parte nuevaParte(*escenasVacia);
     
         for(int i = 0; i < k; i++){
             int indice = stack.top();
-            cout << indice << endl;
+            
             stack.pop();
             Escena escena = (*escenas)[indice];
             
@@ -119,4 +119,3 @@ void Evento::agregarPartes(BaseContainer<Escena>* escenasVacia){
         }
     partes->insert(nuevaParte);
 }
-
