@@ -182,7 +182,7 @@ public:
     /*
      * Divide la lista en dos
      */
-    std::pair<LinkedList<T>*,LinkedList<T>*> divide() override{
+    std::pair<LinkedList<T>*,LinkedList<T>*> divide() {
 
         LinkedList<T>* firstHalf = new LinkedList<T>();
         LinkedList<T>* secondHalf = new LinkedList<T>();
