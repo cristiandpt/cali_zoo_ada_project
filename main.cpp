@@ -11,10 +11,11 @@
 #include "lib/evento/evento.h"
 #include "lib/estrucurasDeDatos/cpp-linkedList/linkedList.h"
 
+#include <typeinfo>
 
 //using namespace std;
 
-int main() {
+int main(int argc, char* argv[]) {
 
     std::cout << "Cali Zoo Awesome Event!" << std::endl << std::endl;
     std::cout << "Ingresa la estructura de datos a utilizar" << " (Seguido de Enter)" <<std::endl;
@@ -27,44 +28,61 @@ int main() {
     // Read user input from the console
     std::cin >> userInput;
 
-    std::cout << "Su entrada fue: " << userInput << std::endl;
-
-    std::cout << "Ingrese k: " << std::endl;
-    std::string k;
-    // Read user input from the console
-    std::cin >> k;
-
-
-    int intValue = (std::stoi(userInput)) - 1;
-
-
-    LinkedList<Parte> partes;
-    LinkedList<Escena> escenas;
-    LinkedList<Escena> escenasVacia;
-    Evento evento = Evento(6, 3, 2, partes, escenas);
-    evento.generarAnimales();
-    evento.llenarEscenas();
-    evento.crearApertura();
-    
-    /**/
-    for(int i = 0; i<2; i++){
-        LinkedList<Escena>* misescenaVacia = new LinkedList<Escena>();
-        evento.agregarPartes(misescenaVacia);
+    if (argc != 4) {
+        // Throw an exception if the value is negative
+        throw std::invalid_argument("Must provide 3 arguments");
     }
 
-    std::shared_ptr<BaseContainer<Escena>> escene_ptr = nullptr;
+    const int n = std::stoi(argv[1]);
+    const int k = std::stoi(argv[2]);
+    const int m = std::stoi(argv[3]);
 
+    std::cout << "Su entrada fue: " << userInput << std::endl;
+
+    int intValue = std::stoi(userInput) - 1;
+
+    // BaseContainer<Parte>* partes = nullptr;
+    // BaseContainer<Escena>* escenas = nullptr;
+    // BaseContainer<Escena>* escenasVacia = nullptr;
+
+
+    //LinkedList<Parte> partes;
+    //LinkedList<Escena> escenas;
+    //LinkedList<Escena> escenasVacia;
+
+
+    std::shared_ptr<BaseContainer<Parte>> parts_ptr = nullptr;
+    std::shared_ptr<BaseContainer<Escena>> escenes_ptr = nullptr;
+   
     if (intValue >= static_cast<int>(DataStructureType::LinkedList) &&
         intValue <= static_cast<int>(DataStructureType::RedBlackTree)) {
+        
         // Cast the integer to DataStructureType Enum for BaseContainer subtype selection.
         DataStructureType type = static_cast<DataStructureType>(intValue);
         // Create the factory for means the factory pattern.
-        escene_ptr = DataStructureFactory<Escena>::createDataStructure(type);
+        escenes_ptr = DataStructureFactory<Escena>::createDataStructure(type);
+        parts_ptr = DataStructureFactory<Parte>::createDataStructure(type);
+
+        Evento evento = Evento(n, m, k, parts_ptr, escenes_ptr);
+        evento.generarAnimales();
+        std::cout << "Hola 1?" << std::endl;
+
+        evento.llenarEscenas();
+        std::cout << "Hola 2?" << std::endl;
+
+        evento.crearApertura();
+        std::cout << "Hola? 3" << std::endl;
+
+   
+        for(int i = 1; i < m; i++){
+            std::shared_ptr<BaseContainer<Escena>> empty_escenes_ptr = DataStructureFactory<Escena>::createDataStructure(type);
+            evento.agregarPartes(empty_escenes_ptr);
+        }
     } else {
         std::cout << "Invalid integer value for BaseContainer selection" << std::endl;
     }
 
-    if (escene_ptr != nullptr) {
+    if (escenes_ptr != nullptr) {
         
     }
 

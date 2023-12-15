@@ -27,6 +27,10 @@ bool Escena::operator<(const Escena& other) const {
         return this->getAnimalGreatness() < other.getAnimalGreatness();
 }
 
+bool Escena::operator==(const Escena& other) const{
+        return this->getAnimalGreatness() == other.getAnimalGreatness();
+}
+
 std::ostream& operator<<(std::ostream& os, const Escena& escene) {
     os << "Escena: " << escene.getAnimalsNames() << std::endl;
     return os;

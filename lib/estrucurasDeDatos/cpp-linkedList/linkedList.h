@@ -190,13 +190,13 @@ public:
         Node<T>* fast = head;
         Node<T>* prev = nullptr;
 
-        while (fast && fast->next) {
+        while (fast && fast->getNext()) {
             prev = slow;
-            slow = slow->next;
-            fast = fast->next->next;
+            slow = slow->getNext();
+            fast = fast->getNext()->getNext();
         }
 
-        if (prev) prev->next = nullptr;
+        if (prev) prev->setNext(nullptr);
         firstHalf->head = head;
         secondHalf->head = slow;
 
@@ -208,44 +208,43 @@ public:
         Node<T> *ptr1 = this->head, *ptr2 = other->head;
 
         while (ptr1 && ptr2) {
-            if (ptr1->value < ptr2->value) {
-                merged->insert(ptr1->value);
-                ptr1 = ptr1->next;
+            if (ptr1->getValue() < ptr2->getValue()) {
+                merged->insert(ptr1->getValue());
+                ptr1 = ptr1->getNext();
             } else {
-                merged->insert(ptr2->value);
-                ptr2 = ptr2->next;
+                merged->insert(ptr2->getValue());
+                ptr2 = ptr2->getNext();
             }
         }
 
         while (ptr1) {
-            merged->insert(ptr1->value);
-            ptr1 = ptr1->next;
+            merged->insert(ptr1->getValue());
+            ptr1 = ptr1->getNext();
         }
 
         while (ptr2) {
-            merged->insert(ptr2->value);
-            ptr2 = ptr2->next;
+            merged->insert(ptr2->getValue());
+            ptr2 = ptr2->getNext();
         }
 
         return merged;
     }
 
-    void mergeSort() override {
+    LinkedList<T>* mergeSort() override {
         if (this == nullptr || this->sizeC() <= 1) {
-            return; // Caso base
+            return this; // Caso base
         }
 
         // Dividir la lista
         auto [firstHalf, secondHalf] = this->divide();
 
         // Ordenar cada mitad recursivamente
-        mergeSort(firstHalf);
-        mergeSort(secondHalf);
+        firstHalf->mergeSort();
+        secondHalf->mergeSort();
 
         // Fusionar las mitades ordenadas
-        list = firstHalf->merge(secondHalf);
+        return firstHalf->merge(secondHalf);
 
-        // Aquí, maneja la limpieza de la memoria si es necesario
     }
 
 

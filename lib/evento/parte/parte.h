@@ -12,8 +12,9 @@ class Parte{
         Parte(BaseContainer<Escena>& escenas);
         ~Parte();
         BaseContainer<Escena>& getEscenas();
-        int getAnimalGreatness();
-        std::string getParteAnimalsNames();  
+        int getAnimalGreatness() const;
+        std::string getParteAnimalsNames();
+        bool operator<(const Parte& other) const;   
         
     private:
         BaseContainer<Escena>& escenas;      

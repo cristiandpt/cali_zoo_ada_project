@@ -29,14 +29,14 @@ std::stack<int> Evento::generarStackRandom(){
     return stack;
 }
 
-Evento::Evento(int n, int m, int k, BaseContainer<Parte>& partes, BaseContainer<Escena>& escenas): n(n), m(m), k(k){
+Evento::Evento( int n, int m, int k, 
+                std::shared_ptr<BaseContainer<Parte>> partes, 
+                std::shared_ptr<BaseContainer<Escena>> escenas)
+: n(n), m(m), k(k), escenas(escenas), partes(partes){
     
-    this->escenas = &escenas;
-    this->partes = &partes;
     nEscenasApertura = (m-1)*k;
     nPartes = m-1;
     stack = generarStackRandom();
-
 }
 
 Evento::~Evento(){}
@@ -80,12 +80,13 @@ std::vector<Animal> Evento::getAnimales(){
 
 void Evento::llenarEscenas(){
     
-    do{
+    do {
         std::set<Animal> animalesAAgregar;
         std::set<std::set<Animal>> animalesAgregados;
 
         while(animalesAAgregar.size() < 3){
             animalesAAgregar.insert(animales[generarIntRandom(0, n-1)]);
+            std::cout << animalesAAgregar.size() << std::endl;
         }
         
         if(animalesAgregados.find(animalesAAgregar) != animalesAgregados.end()){
@@ -93,9 +94,9 @@ void Evento::llenarEscenas(){
         }
         animalesAgregados.insert(animalesAAgregar);
         Escena nuevaEscena(animalesAAgregar);
-        escenas->insert(nuevaEscena);   
-
-    }while (escenas->sizeC() < static_cast<std::size_t>(nEscenasApertura));   
+        escenas->insert(nuevaEscena);  
+ 
+    } while (escenas->sizeC() < static_cast<std::size_t>(nEscenasApertura));   
 
 }
 
@@ -105,7 +106,7 @@ void Evento::crearApertura(){
     
 }
 
-void Evento::agregarPartes(BaseContainer<Escena>* escenasVacia){
+void Evento::agregarPartes(std::shared_ptr<BaseContainer<Escena>> escenasVacia){
     
     Parte nuevaParte(*escenasVacia);
     

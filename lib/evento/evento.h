@@ -6,11 +6,12 @@
 #include "../estrucurasDeDatos/base_container/base_container.h"
 #include "../estrucurasDeDatos/cpp-linkedList/linkedList.h"
 #include <stack>
+#include <memory>
 
-class Evento{
+class Evento {
 
     public:
-        Evento(int n, int m, int k, BaseContainer<Parte>& partes, BaseContainer<Escena>& escenas);
+        Evento(int n, int m, int k, std::shared_ptr<BaseContainer<Parte>> partes, std::shared_ptr<BaseContainer<Escena>> escenas);
         ~Evento();
         int getN();
         int getM();
@@ -25,14 +26,14 @@ class Evento{
         double getPromedioGrandeza();
         std::stack<int> generarStackRandom();
         void crearApertura();
-        void agregarPartes(BaseContainer<Escena>* escenasVacia);
+        void agregarPartes(std::shared_ptr<BaseContainer<Escena>> escenasVacia);
         void llenarEscenas();
         void generarAnimales();
         
         std::vector<Animal> getAnimales();
 
         //cambiar a private
-        BaseContainer<Escena>* escenas = nullptr;
+       
 
 
     private:
@@ -43,9 +44,9 @@ class Evento{
         int nPartes ;
         const int animalesPorEscena = 3;
         std::vector<Animal> animales;
-        BaseContainer<Parte>* partes = nullptr;
+        std::shared_ptr<BaseContainer<Parte>> partes = nullptr;
         std::stack<int> stack;
-        
+        std::shared_ptr<BaseContainer<Escena>> escenas = nullptr;
         
 
 };

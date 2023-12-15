@@ -5,6 +5,7 @@
 #include "../base_container/base_container.h"
 #include <stdexcept>
 #include "./rb_node.h"
+#include <map>
 
 template <typename T>
 class RedBlackTree: public BaseContainer<T> {
@@ -14,14 +15,14 @@ class RedBlackTree: public BaseContainer<T> {
         RedBlackTree() : root(nullptr) {}
 
         std::size_t max() {
-            const std::shared_ptr<RBNode<T>> current = root;
+            std::shared_ptr<RBNode<T>> current = root;
 
             if (current == nullptr) {
                 throw std::logic_error("Tree is empty");
             }
 
-            while (current->right != nullptr) {
-                current = current->right;
+            while (current->getRight() != nullptr) {
+                current = current->getRight();
             }
 
             return current->getValue().getAnimalGreatness();; 
@@ -45,36 +46,42 @@ class RedBlackTree: public BaseContainer<T> {
         std::size_t aggregate() override {
 
             std::size_t sum = 0;
-            for (const auto& node : *this)  {
-                sum += node.getAnimalGreatness();
-            }
+            // for (const auto& node : *this)  {
+            //     sum += node.getValue().getAnimalGreatness();
+            // }
             return sum;
         }
 
         double mean() override {
-            return aggregate()/length;
+            return aggregate()/this->length;
         }
+
+         BaseContainer<T>* mergeSort() override {
+            return this;
+        };
 
         void frecuency() {
-            std::map<std::string> map;
+            std::map<std::string, int> frecuencymeter;
             for (const auto& node : *this)  {
-                const animalName = node->getValue().getAnimalName();
-                if (map.contains(animalName)) {
-                    map[animalName]++
+                const std::string animalName = node->getValue().getAnimalName();
+                if (frecuencymeter.find(animalName) != frecuencymeter.end()) {
+                    frecuencymeter[animalName]++;
                 } else {
-                    map[animalName] = 1;
+                    frecuencymeter[animalName] = 1;
                 }
             }
-            return max(map);
+            return ;
         }
 
-        void insert(T& value) {
+        void insert(T& value) override {
+            std::cout << "insert" << std::endl;
             std::shared_ptr<RBNode<T>> node = std::make_shared<RBNode<T>>(value);
             insertNode(node);
         }
 
         void insertNode(std::shared_ptr<RBNode<T>> node) {
             // Step 1: Perform a standard BST insertion
+            std::cout << "insertNode" << std::endl;
             std::shared_ptr<RBNode<T>> parentNode = nullptr;
             std::shared_ptr<RBNode<T>> currentNode = root;
 
@@ -101,7 +108,7 @@ class RedBlackTree: public BaseContainer<T> {
             node->setColor(RBNode<T>::Color::RED); 
 
             this->length++;
-
+            std::cout << "lasting insertNode" << std::endl;
             // Rectifica el arbol para que siga conservado
             // las propiedades de ser un arbol rojinegro.
             fixInsertionViolations(node);
@@ -151,26 +158,36 @@ class RedBlackTree: public BaseContainer<T> {
 
 
         void fixInsertionViolations(std::shared_ptr<RBNode<T>>& node) {
+            const std::string iss = (node->getParent().lock() == nullptr)? "true": "fasle";
+            std::cout << iss << std::endl;
+            std::cout << "fixInsertionViolations" << std::endl;
             while (node != root && node->getParent().lock()->getColor() == RBNode<T>::Color::RED) {
-                if (node->getParent().lock() == node->getParent().lock()->getParent().lock()->getLeft()) {
+                std::cout << "if fixInsertionViolations" << std::endl;
+                auto parent_local = node->getParent().lock();
+                auto grandparent = (parent_local != nullptr) ? parent_local->getParent().lock() : nullptr;
+                std::cout << parent_local << std::endl;
+                std::cout << grandparent << std::endl;
+                if (node->getParent().lock()->getParent().lock() != nullptr && node->getParent().lock() == node->getParent().lock()->getParent().lock()->getLeft()) {
                     std::shared_ptr<RBNode<T>> uncle = node->getParent().lock()->getParent().lock()->getRight();
-
+                    std::cout << "into if, before if" << std::endl;
                     if (uncle != nullptr && uncle->getColor() == RBNode<T>::Color::RED) {
+                       std::cout << "if" << std::endl;
                         node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
                         uncle->setColor(RBNode<T>::Color::BLACK);
                         node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
                         node = node->getParent().lock()->getParent().lock();
                     } else {
+                        std::cout << "else" << std::endl;
                         if (node == node->getParent().lock()->getRight()) {
                             node = node->getParent().lock();
                             rotateLeft(node);
                         }
-
                         node->getParent().lock()->setColor(RBNode<T>::Color::BLACK);
                         node->getParent().lock()->getParent().lock()->setColor(RBNode<T>::Color::RED);
                         rotateRight(node->getParent().lock()->getParent().lock());
                     }
                 } else {
+                    std::cout << "2est" << std::endl;
                     std::shared_ptr<RBNode<T>> uncle = node->getParent().lock()->getParent().lock()->getLeft();
 
                     if (uncle != nullptr && uncle->getColor() == RBNode<T>::Color::RED) {
@@ -190,7 +207,7 @@ class RedBlackTree: public BaseContainer<T> {
                     }
                 }
             }
-
+            std::cout << "root" << std::endl;
             root->setColor(RBNode<T>::Color::BLACK);
         }
 

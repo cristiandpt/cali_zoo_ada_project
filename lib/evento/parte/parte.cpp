@@ -13,7 +13,7 @@ BaseContainer<Escena>& Parte::getEscenas() {
     return escenas;
 }
 
-int Parte::getAnimalGreatness() {
+int Parte::getAnimalGreatness() const {
     int grandeza = 0;
     for (std::size_t i = 0; i < escenas.sizeC(); i++) {
         grandeza += escenas[i].getAnimalGreatness();
@@ -29,3 +29,7 @@ std::string Parte::getParteAnimalsNames() {
     }
     return nombres;
 }
+
+bool Parte::operator<(const Parte& other) const {
+    return getAnimalGreatness() < other.getAnimalGreatness();
+}  

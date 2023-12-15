@@ -11,7 +11,7 @@ class BaseContainer {
       virtual double mean() = 0;
       virtual ~BaseContainer() = default;
       virtual void insert(T& value) = 0;
-      virtual void mergeSort() = 0;
+      virtual BaseContainer<T>* mergeSort() = 0;
    
       class Iterator {
          public:
@@ -29,8 +29,8 @@ class BaseContainer {
        };
    
 
-  protected:
-      int length{};
+//   protected:
+//       int length{};
 
     
 

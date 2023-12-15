@@ -15,11 +15,11 @@ class DataStructureFactory {
         static std::shared_ptr<BaseContainer<T>> createDataStructure(DataStructureType type) {
             switch (type) {
                 case DataStructureType::LinkedList:
-                    return std::shared_ptr<LinkedList<T>>();
-                case DataStructureType::RedBlackTree:
-                    return std::shared_ptr<RedBlackTree<T>>();
+                    return std::make_shared<LinkedList<T>>();
                 case DataStructureType::HashMap:
-                    return std::shared_ptr<HashMap<T>>();
+                    return std::make_shared<HashMap<T>>();
+                case DataStructureType::RedBlackTree:
+                    return std::make_shared<RedBlackTree<T>>();
                 default:
                     // Handle unknown type (optional)
                     throw std::invalid_argument("Unknown data structure type");
