@@ -15,7 +15,8 @@ class Escena {
         std::set<Animal> getAnimals();
         int getAnimalGreatness() const;
         std::string getAnimalsNames() const;
-        bool operator<(const Escena& other) const;
         bool operator==(const Escena& other) const;
+        bool operator<(const Escena& other) const;
+        bool operator<=(const Escena& other) const;
         friend std::ostream& operator<<(std::ostream& os, const Escena& escene);
 };

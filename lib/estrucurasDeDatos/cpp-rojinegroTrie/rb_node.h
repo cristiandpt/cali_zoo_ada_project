@@ -69,3 +69,56 @@ class RBNode {
         std::weak_ptr<RBNode<V>> parent;
 
 };
+
+
+
+template <>
+class RBNode<Escena> {
+public:
+    enum class Color { RED, BLACK };
+    RBNode(Escena value, Color color = Color::RED)
+        : value(value), color(color), left(nullptr), right(nullptr), parent(std::weak_ptr<RBNode<Escena>>()) {}
+
+    Escena& getValue() {
+        return value;
+    }
+
+    Color getColor() const {
+        return color;
+    }
+
+    void setColor(Color newColor) {
+        color = newColor;
+    }
+
+    std::shared_ptr<RBNode<Escena>> getLeft() const {
+        return left;
+    }
+
+    std::shared_ptr<RBNode<Escena>> getRight() const {
+        return right;
+    }
+
+    std::weak_ptr<RBNode<Escena>> getParent() const {
+        return parent;
+    }
+
+    void setParent(std::weak_ptr<RBNode<Escena>> parentNode) {
+        parent = parentNode;
+    }
+
+    void setRight(std::shared_ptr<RBNode<Escena>> node) {
+        right = node;
+    }
+
+    void setLeft(std::shared_ptr<RBNode<Escena>> node) {
+        left = node;
+    }
+
+private:
+    Escena value;
+    Color color;
+    std::shared_ptr<RBNode<Escena>> left;
+    std::shared_ptr<RBNode<Escena>> right;
+    std::weak_ptr<RBNode<Escena>> parent;
+};

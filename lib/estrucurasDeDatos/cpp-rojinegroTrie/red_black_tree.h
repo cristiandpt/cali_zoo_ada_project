@@ -158,6 +158,10 @@ class RedBlackTree: public BaseContainer<T> {
 
 
         void fixInsertionViolations(std::shared_ptr<RBNode<T>>& node) {
+
+            std::cout << "El tipo de dato a insert en el node es: " << typeid(node).name() << std::endl;
+           /// std::cout << "El valor del node es: " << node->getValue() << std::endl;
+
             const std::string iss = (node->getParent().lock() == nullptr)? "true": "fasle";
             std::cout << iss << std::endl;
             std::cout << "fixInsertionViolations" << std::endl;
@@ -167,7 +171,7 @@ class RedBlackTree: public BaseContainer<T> {
                 auto grandparent = (parent_local != nullptr) ? parent_local->getParent().lock() : nullptr;
                 std::cout << parent_local << std::endl;
                 std::cout << grandparent << std::endl;
-                if (node->getParent().lock()->getParent().lock() != nullptr && node->getParent().lock() == node->getParent().lock()->getParent().lock()->getLeft()) {
+                if (node->getParent().lock()->getParent().lock() != nullptr && node->getParent().lock() == node->getParent().lock()->getParent().lock()->getLeft()) {  // Esta linea esta generando el error en la instruccion  node->getParent().lock()->getParent().lock()->getLeft(), cuando el nodo es null se imprime "0" su valor
                     std::shared_ptr<RBNode<T>> uncle = node->getParent().lock()->getParent().lock()->getRight();
                     std::cout << "into if, before if" << std::endl;
                     if (uncle != nullptr && uncle->getColor() == RBNode<T>::Color::RED) {
