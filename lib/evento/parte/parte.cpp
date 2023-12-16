@@ -33,3 +33,11 @@ std::string Parte::getParteAnimalsNames() {
 bool Parte::operator<(const Parte& other) const {
     return getAnimalGreatness() < other.getAnimalGreatness();
 }  
+
+bool Parte::operator==(const Parte& other) const {
+    return getAnimalGreatness() == other.getAnimalGreatness();
+}
+       
+bool Parte::operator<=(const Parte& other) const {
+    return getAnimalGreatness() <= other.getAnimalGreatness();
+}

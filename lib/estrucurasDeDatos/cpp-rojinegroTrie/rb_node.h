@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <memory>
+#include "../../evento/parte/parte.h"
+#include "../../escena/escena.h"
 
 template <typename V>
 class RBNode {
@@ -121,4 +123,55 @@ private:
     std::shared_ptr<RBNode<Escena>> left;
     std::shared_ptr<RBNode<Escena>> right;
     std::weak_ptr<RBNode<Escena>> parent;
+};
+
+template <>
+class RBNode<Parte> {
+public:
+    enum class Color { RED, BLACK };
+    RBNode(Parte value, Color color = Color::RED)
+        : value(value), color(color), left(nullptr), right(nullptr), parent(std::weak_ptr<RBNode<Parte>>()) {}
+
+    Parte& getValue() {
+        return value;
+    }
+
+    Color getColor() const {
+        return color;
+    }
+
+    void setColor(Color newColor) {
+        color = newColor;
+    }
+
+    std::shared_ptr<RBNode<Parte>> getLeft() const {
+        return left;
+    }
+
+    std::shared_ptr<RBNode<Parte>> getRight() const {
+        return right;
+    }
+
+    std::weak_ptr<RBNode<Parte>> getParent() const {
+        return parent;
+    }
+
+    void setParent(std::weak_ptr<RBNode<Parte>> parentNode) {
+        parent = parentNode;
+    }
+
+    void setRight(std::shared_ptr<RBNode<Parte>> node) {
+        right = node;
+    }
+
+    void setLeft(std::shared_ptr<RBNode<Parte>> node) {
+        left = node;
+    }
+
+private:
+    Parte value;
+    Color color;
+    std::shared_ptr<RBNode<Parte>> left;
+    std::shared_ptr<RBNode<Parte>> right;
+    std::weak_ptr<RBNode<Parte>> parent;
 };

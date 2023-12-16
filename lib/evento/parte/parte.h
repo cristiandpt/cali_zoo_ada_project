@@ -14,7 +14,9 @@ class Parte{
         BaseContainer<Escena>& getEscenas();
         int getAnimalGreatness() const;
         std::string getParteAnimalsNames();
-        bool operator<(const Parte& other) const;   
+        bool operator<(const Parte& other) const;
+        bool operator==(const Parte& other) const;
+        bool operator<=(const Parte& other) const;   
         
     private:
         BaseContainer<Escena>& escenas;      
